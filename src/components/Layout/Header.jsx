@@ -76,6 +76,10 @@ const Header = () => {
     const [position, setPosition] = useState([51.505, -0.09]);
 
     useEffect(() => {
+        console.log("cityData:", cityData)
+    },[cityData])
+
+    useEffect(() => {
         if (IsShowCatDrop || IsShowOtherCat) {
             const allCatWrapper = document.querySelector('.allCatWrapper');
             const cateCont = document.querySelector('.cate_cont');
@@ -391,11 +395,11 @@ const Header = () => {
                             <button onClick={handleSearchNav}><FaSearch size={14} /><span className='srch'>{t('search')}</span></button>
                         </div>
                     </div>
-                    {cityData?.city !== "" &&
+                    {cityData &&
                         <div className='home_header_location' onClick={openLocationEditModal}>
                             <GrLocation size={16} />
-                            <p title={`${cityData?.city}${cityData?.city ? "," : ""} ${cityData?.state}${cityData?.state ? "," : ""} ${cityData?.country}`}>
-                                {truncate(`${cityData?.city}${cityData?.city ? "," : ""} ${cityData?.state}${cityData?.state ? "," : ""} ${cityData?.country}`, 10)}
+                            <p title={`${cityData?.area}${cityData?.area ? "," : ""} ${cityData?.city}${cityData?.city ? "," : ""} ${cityData?.state}${cityData?.state ? "," : ""} ${cityData?.country}`}>
+                                {truncate(`${cityData?.area}${cityData?.area ? "," : ""} ${cityData?.city}${cityData?.city ? "," : ""} ${cityData?.state}${cityData?.state ? "," : ""} ${cityData?.country}`, 10)}
                             </p>
                         </div>
                     }

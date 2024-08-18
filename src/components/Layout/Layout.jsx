@@ -132,7 +132,7 @@ const Layout = ({ children }) => {
         const isBlogPage = pathname.startsWith('/blogs/');
         const isProductDetailsPage = pathname.startsWith('/product-details/');
 
-        if (cityData?.city === "" && !isBlogPage && !isProductDetailsPage) {
+        if ((cityData?.city === "" && cityData?.state === "" && cityData?.country === "") && !isBlogPage && !isProductDetailsPage) {
             router.push('/home');
         }
     }, [cityData, pathname]);

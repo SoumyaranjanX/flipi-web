@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { saveCity } from '@/redux/reuducer/locationSlice';
 import { settingsData } from '@/redux/reuducer/settingSlice';
 import MapComponent from '../MyListing/MapComponent';
+import { getAreasApi } from '@/utils/api';
 
 const LocationModal = ({ IsLocationModalOpen, OnHide, position, setPosition }) => {
     const { isLoaded } = loadGoogleMaps();
@@ -29,24 +30,50 @@ const LocationModal = ({ IsLocationModalOpen, OnHide, position, setPosition }) =
         }
     }, [isLoaded]);
 
-    const handlePlacesChanged = () => {
+    const handlePlacesChanged = async () => {
         const places = searchBoxRef.current.getPlaces();
         if (places && places.length > 0) {
             const place = places[0];
-            console.log(place)
+            console.log("place: ", place)
+            const getAddressComponent = (type) => {
+                const component = place.address_components.find(comp => comp.types.includes(type));
+                return component ? component.long_name : '';
+            };
+
+            const areaName = getAddressComponent("sublocality");
+    
             const cityData = {
                 lat: place.geometry.location.lat(),
                 long: place.geometry.location.lng(),
-                city: place.address_components.find(comp => comp.types.includes("locality"))?.long_name,
-                state: place.address_components.find(comp => comp.types.includes("administrative_area_level_1"))?.long_name,
-                country: place.address_components.find(comp => comp.types.includes("country"))?.long_name
+                city: getAddressComponent("locality") || '', // Default to empty string if not found
+                state: getAddressComponent("administrative_area_level_1") || '', // Default to empty string if not found
+                country: getAddressComponent("country") || '', // Default to empty string if not found
+                area: '', // Area will be fetched from the API if available
+                area_id: null, // Area ID will be fetched from the API if available
             };
-            const newPosition = {
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng(),
+
+            if (areaName) {
+                try {
+                    const res = await getAreasApi.getAreas({ search: areaName });
+                    const areaData =  res?.data?.data?.data[0] || '';
+                    
+                    if (areaData) {
+                        cityData.area = areaData.name;
+                        cityData.area_id = areaData.id;
+                    }
+                } catch (error) {
+                    console.error('Error fetching area data:', error);
+                }
             }
-            getLocationWithMap(newPosition)
-            setPosition(newPosition)
+
+            if(cityData.city != ''){
+                const newPosition = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                }
+                // getLocationWithMap(newPosition)
+                setPosition(newPosition)
+            }
             setSelectedCity(cityData);
             setIsValidLocation(true);
         } else {
@@ -91,6 +118,8 @@ const LocationModal = ({ IsLocationModalOpen, OnHide, position, setPosition }) =
         try {
             const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${settings?.place_api_key}`);
             const results = response.data.results[0];
+
+            console.log("result from map: ", pos)
 
             // Extract address components
             const addressComponents = results.address_components;

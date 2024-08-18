@@ -73,17 +73,41 @@ const AnythingYouWant = () => {
         }
     };
 
-    const handlePlacesChanged = () => {
+    const handlePlacesChanged = async () => {
         const places = searchBoxRef.current.getPlaces();
         if (places && places.length > 0) {
             const place = places[0];
+            const getAddressComponent = (type) => {
+                const component = place.address_components.find(comp => comp.types.includes(type));
+                return component ? component.long_name : '';
+            };
+
+            const areaName = getAddressComponent("sublocality") || getAddressComponent("neighborhood") || getAddressComponent("locality");
+    
             const cityData = {
                 lat: place.geometry.location.lat(),
                 long: place.geometry.location.lng(),
-                city: place.address_components.find(comp => comp.types.includes("locality"))?.long_name,
-                state: place.address_components.find(comp => comp.types.includes("administrative_area_level_1"))?.long_name,
-                country: place.address_components.find(comp => comp.types.includes("country"))?.long_name
+                city: getAddressComponent("locality") || '', 
+                state: getAddressComponent("administrative_area_level_1") || '',
+                country: getAddressComponent("country") || '',
+                area: '', // Area will be fetched from the API if available
+                area_id: null, // Area ID will be fetched from the API if available
             };
+
+            if (areaName) {
+                try {
+                    const res = await getAreasApi.getAreas({ search: areaName });
+                    const areaData =  res?.data?.data?.data[0] || '';
+                    
+                    if (areaData) {
+                        cityData.area = areaData.name;
+                        cityData.area_id = areaData.id;
+                    }
+                } catch (error) {
+                    console.error('Error fetching area data:', error);
+                }
+            }
+
             saveCity(cityData);
             setSelectedCity(cityData);
             setIsValidLocation(true);

@@ -7,7 +7,7 @@ import { userSignUpData } from "@/redux/reuducer/authSlice";
 import { useSelector } from "react-redux";
 import NoData from "../NoDataFound/NoDataFound";
 import { allItemApi } from "@/utils/api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { settingsData } from "@/redux/reuducer/settingSlice";
 
@@ -21,21 +21,29 @@ const FeaturedSections = ({ isLoading, featuredData, setFeaturedData, cityData }
     const settings = systemSettingsData?.data
     const isDemoMode = settings?.demo_mode
 
+    const prevCityDataRef = useRef(cityData);
+
     // Check if all section_data arrays are empty
     const allEmpty = featuredData?.every(ele => ele?.section_data.length === 0);
 
-    const getAllItemData = async () => {
+    const getAllItemData = async (isCityChanged) => {
         try {
             setAllItemLoading(true);
 
+            if(isCityChanged){
+                setAllItemData([])
+            }
+
             const response = await allItemApi.getItems({
                 page,
+                area_id: !isDemoMode ? cityData?.area_id : '',
                 city: !isDemoMode ? cityData?.city : '',
                 state: !isDemoMode ? cityData?.state : '',
                 country: !isDemoMode ? cityData?.country : ''
             });
             if (response?.data?.data?.data.length > 0) {
                 const data = response?.data?.data?.data;
+                console.log("data:", data)
                 const currentPage = response?.data?.data?.current_page;
                 const lastPage = response?.data?.data?.last_page;
                 setAllItemData(prevData => [...prevData, ...data]);
@@ -53,8 +61,10 @@ const FeaturedSections = ({ isLoading, featuredData, setFeaturedData, cityData }
     };
 
     useEffect(() => {
-        getAllItemData()
-    }, [page, cityData])
+        const isCityChanged = prevCityDataRef.current !== cityData;
+        getAllItemData(isCityChanged);
+        prevCityDataRef.current = cityData;
+    }, [page, cityData]);
 
 
     const handleLike = (id) => {
