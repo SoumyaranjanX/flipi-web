@@ -21,6 +21,7 @@ const ContentFive = ({ getCurrentLocation, Countries, setSelectedCountry, setSel
     const handleStateChange = (value) => {
         const State = States.find(country => country.name === value?.label);
         setSelectedState(State);
+        setSelectedCity('');
     }
     const handleCityChange = (value) => {
         const City = Cities.find(city => city.name === value?.label);
@@ -157,12 +158,31 @@ const ContentFive = ({ getCurrentLocation, Countries, setSelectedCountry, setSel
                                 ))}
                             </Select>
                         ) : (
-                            Object.keys(SelectedCity).length !== 0 && (
-                                <div className='auth_in_cont'>
-                                    <label htmlFor="address" className='auth_pers_label'>{t('address')}</label>
-                                    <textarea name="address" id="address" rows="3" className='auth_input' value={Address} onChange={handleAddressChange}></textarea>
-                                </div>
-                            )
+                            // Object.keys(SelectedCity).length !== 0 && (
+                            //     <div className='auth_in_cont'>
+                            //         <label htmlFor="address" className='auth_pers_label'>{t('address')}</label>
+                            //         <textarea name="address" id="address" rows="3" className='auth_input' value={Address} onChange={handleAddressChange}></textarea>
+                            //     </div>
+                            // )
+                            SelectedCity.name ? (
+                                (
+                                    <Select
+                                    showSearch
+                                    style={{ width: "100%" }}
+                                    placeholder={t('areaSelect')}
+                                    onChange={handleAreaChange}
+                                    onSearch={handleAreaSearch}
+                                    labelInValue
+                                    filterOption={false}
+                                    className='location_select'
+                                >
+                                    
+                                    <Option value='' selected disabled>
+                                       No Servicable Location Found
+                                    </Option>
+                                </Select>
+                                )
+                            ) : <></>
                         )}
                     </div>
                 </div>

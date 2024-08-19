@@ -1,0 +1,38 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.flipiapp.flipi",
+            "sha256_cert_fingerprints": [
+                "55:6A:54:A2:16:08:C9:BD:55:8A:B3:5E:90:C7:07:98:D5:64:C1:4F:32:33:A5:19:9E:C4:12:C7:D9:E7:B4:0C"
+            ]
+        }
+    },
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.flipiapp.flipi",
+            "sha256_cert_fingerprints": [
+                "55:6A:54:A2:16:08:C9:BD:55:8A:B3:5E:90:C7:07:98:D5:64:C1:4F:32:33:A5:19:9E:C4:12:C7:D9:E7:B4:0C"
+            ]
+        }
+    },
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.flipiapp.flipi",
+            "sha256_cert_fingerprints": [
+                "55:6A:54:A2:16:08:C9:BD:55:8A:B3:5E:90:C7:07:98:D5:64:C1:4F:32:33:A5:19:9E:C4:12:C7:D9:E7:B4:0C"
+            ]
+        }
+    }
+]
