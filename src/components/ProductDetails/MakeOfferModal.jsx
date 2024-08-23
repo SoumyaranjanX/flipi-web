@@ -8,6 +8,7 @@ import { FaCheck } from 'react-icons/fa6'
 import { saveOfferData } from '@/redux/reuducer/offerSlice'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
+import { useSelector } from "react-redux";
 
 const MakeOfferModal = ({ IsOpenMakeOffer, OnHide, offerData }) => {
     const CloseIcon = <div className="close_icon_cont"><MdClose size={24} color="black" /></div>
@@ -17,6 +18,9 @@ const MakeOfferModal = ({ IsOpenMakeOffer, OnHide, offerData }) => {
     const [tipsData, setTipsData] = useState([])
     const [offerPrice, setOfferPrice] = useState('') // State to store offer price
     const [error, setError] = useState('') // State to store error message
+
+    const systemSettingsData = useSelector((state) => state?.Settings)
+    const CurrencySymbol = systemSettingsData?.data?.data?.currency_symbol
 
     const closeOfferModal = () => {
         OnHide()
@@ -102,7 +106,7 @@ const MakeOfferModal = ({ IsOpenMakeOffer, OnHide, offerData }) => {
                         </div>
                         <div className='sellerprice_cont'>
                             <p className='m-0'>{t("sellerPrice")}</p>
-                            <span>${offerData?.itemPrice}</span>
+                            <span>{CurrencySymbol}{offerData?.itemPrice}</span>
                         </div>
                         <div className='sendoffer_cont'>
                             <div className='auth_in_cont'>

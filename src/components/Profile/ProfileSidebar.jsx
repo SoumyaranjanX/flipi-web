@@ -7,7 +7,7 @@ import { deleteUser, getAuth } from 'firebase/auth';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { BiChat, BiDollarCircle, BiReceipt, BiShieldAlt2, BiTrashAlt } from 'react-icons/bi'
+import { BiChat, BiRupee, BiReceipt, BiShieldAlt2, BiTrashAlt } from 'react-icons/bi'
 import { FiUser } from 'react-icons/fi';
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { LiaAdSolid } from "react-icons/lia";
@@ -117,7 +117,7 @@ const ProfileSidebar = () => {
                     <span className='profile_sidebar_notif'>{t('chat')}</span>
                 </Link>
                 <Link href='/user-subscription' className={`profile_sidebar_tab ${pathname === '/user-subscription' && 'active_tab'}`}>
-                    <BiDollarCircle size={24} />
+                    <BiRupee size={24} />
                     <span className='profile_sidebar_notif'>{t('subscription')}</span>
                 </Link>
                 <Link href='/ads' className={`profile_sidebar_tab ${pathname === '/ads' && 'active_tab'}`}>

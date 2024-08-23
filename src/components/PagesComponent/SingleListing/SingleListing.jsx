@@ -30,7 +30,7 @@ import { useDispatch } from "react-redux";
 import { setBreadcrumbPath } from "@/redux/reuducer/breadCrumbSlice";
 import BreadcrumbComponent from "@/components/Breadcrumb/BreadcrumbComponent";
 import Swal from "sweetalert2";
-
+import { useSelector } from "react-redux";
 
 
 const SingleListing = ({ slug }) => {
@@ -56,6 +56,8 @@ const SingleListing = ({ slug }) => {
     const [isVideClicked, setIsVideClicked] = useState(false)
     const [IsCallSingleListing, setIsCallSingleListing] = useState(false)
 
+    const systemSettingsData = useSelector((state) => state?.Settings)
+    const CurrencySymbol = systemSettingsData?.data?.data?.currency_symbol
 
     useEffect(() => {
         if (swiperRef && swiperRef?.current) {
@@ -478,7 +480,7 @@ const SingleListing = ({ slug }) => {
                                             {/* <button><FiShare2 size={20} /></button> */}
                                         </div>
                                         <div className='price_ad'>
-                                            <span className='price'>${SingleListing?.price}</span>
+                                            <span className='price'>{CurrencySymbol}{SingleListing?.price}</span>
                                             <span className='ad'>{t("adId")} #{SingleListing?.id}</span>
                                         </div>
                                     </div>

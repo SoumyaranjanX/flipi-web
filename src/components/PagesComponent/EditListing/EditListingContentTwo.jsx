@@ -29,7 +29,7 @@ const ContentTwo = ({ AdListingDetails, handleAdListingChange, handleDetailsSubm
 
                     <div className="col-12">
                         <label className='auth_label' htmlFor="price">{t('price')}</label>
-                        <input placeholder='$ 00' value={AdListingDetails.price} name='price' className={`${AdListingDetails.price !== '' ? 'bg' : ''}`} type='number' onChange={handleAdListingChange} onKeyPress={(e) => inpNum(e)} required />
+                        <input placeholder='₹ 00' value={AdListingDetails.price} name='price' className={`${AdListingDetails.price !== '' ? 'bg' : ''}`} type='number' onChange={handleAdListingChange} onKeyPress={(e) => inpNum(e)} required />
                     </div>
 
                     <div className="col-12">
