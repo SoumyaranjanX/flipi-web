@@ -479,7 +479,7 @@ export const getMessagesApi = {
 // add item api 
 
 export const addItemApi = {
-    addItem: ({ name, slug, description, category_id, all_category_ids, price, contact, video_link, custom_fields, image, gallery_images = [], address, latitude, longitude, custom_field_files = [], show_only_to_premium, country, state, city } = {}) => {
+    addItem: ({ name, slug, description, category_id, all_category_ids, price, contact, video_link, custom_fields, image, gallery_images = [], address, area_id, latitude, longitude, custom_field_files = [], show_only_to_premium, country, state, city } = {}) => {
         const formData = new FormData();
         // Append only if the value is defined and not an empty string
 
@@ -501,6 +501,7 @@ export const addItemApi = {
             });
         }
         if (address) formData.append('address', address);
+        if (area_id) formData.append('area_id', area_id);
         if (latitude) formData.append('latitude', latitude);
         if (longitude) formData.append('longitude', longitude);
 

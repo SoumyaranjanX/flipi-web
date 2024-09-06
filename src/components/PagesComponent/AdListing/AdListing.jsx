@@ -439,13 +439,14 @@ const AdListing = () => {
     const cat = CurrentPath[CurrentPath.length - 1];
     const catId = cat.id;
 
-    let countryName, stateName, cityName, latitude, longitude, address;
+    let countryName, stateName, cityName, latitude, longitude, address, areaId;
 
     if (ActiveLocation === 'manually') {
       countryName = SelectedCountry.name;
       stateName = SelectedState.name;
       cityName = SelectedCity.name;
       address = Area.length !== 0 ? SelectedArea.name : Address;
+      areaId = SelectedArea.id;
       latitude = SelectedCity.latitude;
       longitude = SelectedCity.longitude;
     } else if (ActiveLocation === 'locate') {
@@ -455,6 +456,7 @@ const AdListing = () => {
       latitude = Location?.lat;
       longitude = Location?.long;
       address = Location?.address;
+      areaId = 1;
     } else {
       countryName = LocationByMap.country;
       stateName = LocationByMap.state;
@@ -462,6 +464,7 @@ const AdListing = () => {
       latitude = LocationByMap.lat;
       longitude = LocationByMap.long;
       address = LocationByMap.address;
+      areaId = 1;
     }
 
 
@@ -489,6 +492,7 @@ const AdListing = () => {
       image: uploadedImages[0],
       gallery_images: OtherImages,
       address: address,
+      area_id: areaId,
       latitude: latitude,
       longitude: longitude,
       custom_field_files: customFieldFiles,
